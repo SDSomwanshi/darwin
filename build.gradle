@@ -1,0 +1,93 @@
+import io.swagger.codegen.v3.cli.cmd.Generate
+buildscript {
+
+	ext {
+		springBootVersion = "2.0.0.RELEASE"
+		jacocoWorkspaceDirectory = "/jacoco/"
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.2.RELEASE"
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+		classpath 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.4'
+		classpath 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.4'
+	}
+}
+
+group = 'com.recipemanager'
+version = '0.0.1-SNAPSHOT'
+
+//sourceCompatibility = 1.8
+//targetCompatibility = 1.8
+description = "RecipeManager"
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: "io.spring.dependency-management"
+
+springBoot  {
+	mainClassName = 'com.recipemanager.RecipeManagerApplication'
+	buildInfo()
+}
+
+bootRun {
+	environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "local"
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly group: 'com.h2database', name: 'h2', version:'1.0.60'
+	annotationProcessor 'org.projectlombok:lombok'
+	compile group: 'com.h2database', name: 'h2', version:'1.0.60'
+	// Lombok
+	compile("org.projectlombok:lombok:1.18.12")
+
+	// Test
+	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+	// Swagger Annotations and Models
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+}
+
+// Swagger CodeGen
+ext.appName      = 'recipemanager'
+ext.apiPackage = 'com.darwin.recipemanager.generated.api'
+ext.modelPackage = 'com.darwin.recipemanager.generated.model'
+ext.swaggerFile  = "${rootDir}/src/main/resources/recipemanager.yml"
+ext.swaggerBuildDir = "${project.buildDir}/recipemanager"
+
+
+task generateServer {
+	doLast {
+		def config = new Generate()
+		config.setLang("spring")
+		config.setApiPackage(rootProject.apiPackage)
+		config.setModelPackage(rootProject.modelPackage)
+		config.setSpec(rootProject.swaggerFile.toString())
+		def systemProps = []
+		systemProps.add("models")
+		systemProps.add("apis")
+		config.setSystemProperties(systemProps)
+	}
+}
+
+sourceSets.main.java.srcDir "${rootProject.swaggerBuildDir}/src/main/java"
+sourceSets.main.resources.srcDir "${rootProject.swaggerBuildDir}/src/main.resources"
+
+test {
+	useJUnitPlatform()
+}

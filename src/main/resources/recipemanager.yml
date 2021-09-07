@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: Recipe Management Service
+  description: "Recipe Management Service"
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: sdsomwanshi89@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1-SNAPSHOT
+tags:
+  - name: Recipe Management
+    description: Operations for Recipe Management Service
+paths:
+  /recipe:
+    post:
+      summary: Accept and save recipe data
+      operationId: saveRecipe
+      tags:
+        - RecipeData
+      security:
+        - xOpenApiClientId: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertRecipeRequest"
+        description: User will insert a new recipe
+        required: true
+      respinses:
+        '200':
+          description: |
+            OK
+          headers:
+            trace-id:
+              description: trace ID for this transaction
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InsertRecipeResponse"
+components:
+  responses:
+    BadRequest:
+      description: |
+        Bad request, see error object for details
+      headers:
+        trace-id:
+          description: trace ID for this transaction
+          schema:
+            type: string
+          example: 2fea0a89-8ebe-40dd-a37e-f58cc1ddb236
+      content:
+        application/json:
+          #schema: '#/components/schemas/Error'
+  parameters:
+    traceId:
+      in: header
+      name: trace-id
+      description: trace ID for this transaction
+      required: true
+      schema:
+        type: string
+  schemas:
+    InsertRecipeRequest:
+      type: object
+      required:
+        - recipeName
+      properties:
+        recipeName:
+          type: string
+          description: name of the recipe
+        recipeType:
+          type: string
+        recipeQty:
+          type: integer
+
