@@ -19,8 +19,8 @@ paths:
       operationId: saveRecipe
       tags:
         - RecipeData
-      security:
-        - xOpenApiClientId: []
+      parameters:
+        - $ref: '#/components/parameters/traceId'
       requestBody:
         content:
           application/json:
@@ -28,7 +28,7 @@ paths:
               $ref: "#/components/schemas/InsertRecipeRequest"
         description: User will insert a new recipe
         required: true
-      respinses:
+      responses:
         '200':
           description: |
             OK
@@ -54,7 +54,8 @@ components:
           example: 2fea0a89-8ebe-40dd-a37e-f58cc1ddb236
       content:
         application/json:
-          #schema: '#/components/schemas/Error'
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     traceId:
       in: header
@@ -76,4 +77,63 @@ components:
           type: string
         recipeQty:
           type: integer
-
+        ingredients:
+          type: array
+          description: List of ingredients
+          items:
+            $ref: "#/components/schemas/Ingredient"
+        instructions:
+          type: array
+          description: List of instructions
+          items:
+            $ref: "#/components/schemas/Instruction"
+    InsertRecipeResponse:
+      type: object
+      properties:
+        recipeName:
+          type: string
+        recipeNature:
+          type: string
+          enum:
+            - VEG
+            - NONVEG
+        recipeQty:
+          type: string
+        ingredients:
+          type: array
+          description: List of ingredients
+          items:
+            $ref: "#/components/schemas/Ingredient"
+        instructions:
+          type: array
+          description: List of instructions
+          items:
+            $ref: "#/components/schemas/Instruction"
+        createdDate:
+          type: string
+        updatedDate:
+          type: string
+    Ingredient:
+      type: object
+      properties:
+        name:
+          type: string
+    Instruction:
+      type: object
+      properties:
+        instructionName:
+          type: string
+    Error:
+      type: object
+      required:
+        - status
+        - reason
+        - message
+      properties:
+        status:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        message:
+          type: string

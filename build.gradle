@@ -1,6 +1,5 @@
 import io.swagger.codegen.v3.cli.cmd.Generate
 buildscript {
-
 	ext {
 		springBootVersion = "2.0.0.RELEASE"
 		jacocoWorkspaceDirectory = "/jacoco/"
@@ -12,20 +11,21 @@ buildscript {
 		classpath "io.spring.gradle:dependency-management-plugin:1.0.2.RELEASE"
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
 		classpath 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.4'
-		classpath 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.4'
 	}
 }
 
 group = 'com.recipemanager'
 version = '0.0.1-SNAPSHOT'
 
-//sourceCompatibility = 1.8
-//targetCompatibility = 1.8
-description = "RecipeManager"
+description = """RecipeManager"""
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: "io.spring.dependency-management"
+
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
+}
 
 springBoot  {
 	mainClassName = 'com.recipemanager.RecipeManagerApplication'
@@ -53,6 +53,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly group: 'com.h2database', name: 'h2', version:'1.0.60'
 	annotationProcessor 'org.projectlombok:lombok'
+	
+	//Data persistance
 	compile group: 'com.h2database', name: 'h2', version:'1.0.60'
 	// Lombok
 	compile("org.projectlombok:lombok:1.18.12")
@@ -61,10 +63,14 @@ dependencies {
 	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 	// Swagger Annotations and Models
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+
+	compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version:'2.9.5'
+	compile group: 'com.fasterxml.jackson.core', name: "jackson-databind", version:'2.9.5'
+	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.0'
 }
 
 // Swagger CodeGen
-ext.appName      = 'recipemanager'
+ext.appName = 'recipemanager'
 ext.apiPackage = 'com.darwin.recipemanager.generated.api'
 ext.modelPackage = 'com.darwin.recipemanager.generated.model'
 ext.swaggerFile  = "${rootDir}/src/main/resources/recipemanager.yml"
@@ -78,12 +84,24 @@ task generateServer {
 		config.setApiPackage(rootProject.apiPackage)
 		config.setModelPackage(rootProject.modelPackage)
 		config.setSpec(rootProject.swaggerFile.toString())
+		config.setOutput(rootProject.swaggerBuildDir)
 		def systemProps = []
 		systemProps.add("models")
 		systemProps.add("apis")
 		config.setSystemProperties(systemProps)
+
+		def additionalProperties = []
+		additionalProperties.add("dateLibrary=java8")
+		additionalProperties.add("useTags=true")
+		additionalProperties.add("isDelegate=true")
+		additionalProperties.add("delegatePattern=true")
+		additionalProperties.add("IDontCare=true")
+		config.setAdditionalProperties(additionalProperties)
+		config.run()
 	}
 }
+compileJava.dependsOn('generateServer')
+build.dependsOn generateServer
 
 sourceSets.main.java.srcDir "${rootProject.swaggerBuildDir}/src/main/java"
 sourceSets.main.resources.srcDir "${rootProject.swaggerBuildDir}/src/main.resources"

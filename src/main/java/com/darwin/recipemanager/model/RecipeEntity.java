@@ -19,8 +19,8 @@ public class RecipeEntity extends BaseEntity implements Persistable<String> {
     @Column(name = "RECIPE_NAME")
     private String recipeName;
 
-    @Column(name = "RECIPE_TYPE")
-    private int typeOfRecipe;
+    @Column(name = "RECIPE_NATURE")
+    private int natureOfRecipe;
 
     @Column(name = "RECIPE_QTY")
     private int quantity;

@@ -16,7 +16,10 @@ public class InstructionEntity extends BaseEntity implements Persistable<String>
     private String instructionDataId;
 
     @Column(name = "INSTRUCTION_NAME")
-    private String instruction;
+    private String instructionName;
+
+    @Column(name = "RECIPE_DATA_ID")
+    private String recipeDataId;
 
     @ManyToOne
     @MapsId("recipeEntity")

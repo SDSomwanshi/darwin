@@ -19,6 +19,9 @@ public class IngredientEntity extends BaseEntity implements Persistable<String> 
     @Column(name = "INGREDIENT_NAME")
     private String ingredientName;
 
+    @Column(name = "RECIPE_DATA_ID")
+    private String recipeDataId;
+
     @ManyToOne
     @MapsId("recipeEntity")
     @JoinColumn(name = "RECIPE_DATA_ID", referencedColumnName = "RECIPE_DATA_ID")
