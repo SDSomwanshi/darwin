@@ -1,0 +1,17 @@
+<div>
+    <input type = "text" [(ngModel)] = "recipe.recipeName" name = "recipeName" placeholder = "Recipe Name" >
+    <br><br>
+    <input type="radio" value="VEG" name = "nature" [(ngModel)]="recipe.recipeType" required > VEG
+    <input type="radio" value="NONVEG" name = "nature" [(ngModel)]="recipe.recipeType" required> NONVEG
+    <br><br>
+    <input type = "text" [(ngModel)] = "recipe.recipeQty" name = "recipeQty" placeholder = "Quantity" >
+    <br><br>
+    <input type = "text" [(ngModel)] = "currentIngredient" name = "recipeIngredient" placeholder = "Ingredients" >
+    &nbsp;<input type = "button" (click)="updateIngredientList()" value = "Add">
+    
+    <br><br>
+    <input type = "text" [(ngModel)] = "currentInstruction" name = "recipeInstruction" placeholder = "Instructions" >
+    &nbsp;<input type = "button" (click)="updateInstructionList()" value = "Add">
+    <br><br>
+    <input type = "button" (click)="submitRecipe()" value = "Submit">
+</div>
