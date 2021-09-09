@@ -41,6 +41,137 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InsertRecipeResponse"
+        '400':
+          description: Invalid input parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /recipes/{recipe_id}:
+    get:
+      summary: Find recipes by Id
+      operationId: getRecipeData
+      tags:
+        - RecipeData
+      parameters:
+        - $ref: '#/components/parameters/traceId'
+        - name: recipe_id
+          in: path
+          description: recipeId of calling
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            OK
+          headers:
+            trace-id:
+              description: traceId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertRecipeResponse'
+        '400':
+          description: Invalid input parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /recipes:
+    get:
+      operationId: getAllRecipeData
+      tags:
+        - RecipeData
+      parameters:
+        - $ref: '#/components/parameters/traceId'
+      responses:
+        '200':
+          description: |
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeList'
+        '400':
+          description: Invalid input parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /recipe/{recipe_id}:
+    delete:
+      operationId: delete
+      tags:
+        - RecipeData
+      parameters:
+        - $ref: '#/components/parameters/traceId'
+        - name: recipe_id
+          in: path
+          description: recipeId of calling
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            OK
+        '400':
+          description: Invalid input parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   responses:
     BadRequest:
@@ -90,6 +221,8 @@ components:
     InsertRecipeResponse:
       type: object
       properties:
+        recipeId:
+          type: string
         recipeName:
           type: string
         recipeNature:
@@ -123,6 +256,13 @@ components:
       properties:
         instructionName:
           type: string
+    RecipeList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/InsertRecipeResponse"
     Error:
       type: object
       required:

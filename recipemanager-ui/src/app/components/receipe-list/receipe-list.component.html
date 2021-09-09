@@ -1,0 +1,44 @@
+<ng-container *ngIf="recipes && recipes.length > 0; else elseTemplate">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Recipe Name</th>
+        <th scope="col">RecipeNature</th>
+        <th scope="col">ingredients</th>
+        <th scope="col">instructions</th>
+        <th scope="col">createdDate</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of recipes; let i = index">
+        <th scope="row">{{ i +1}}</th>
+        <td>{{ item.recipeName }}</td>
+        <td>{{ item.recipeNature }}</td>
+        <td>
+          <div *ngFor="let ing of item.ingredients">{{ ing.name }},</div>
+        </td>
+        <td>
+          <div *ngFor="let ins of item.instructions">
+            {{ ins.instructionName }},
+          </div>
+        </td>
+        <td>{{ item.createdDate | date }}</td>
+        <td><a
+          [title]="item.recipeName"
+          [routerLink]="['/details', item.recipeId]">
+          Details
+        </a>
+          <a
+                  [title]="item.recipeName"
+                  [routerLink]="['/delete', item.recipeId]">
+            Delete
+          </a>
+        </td>
+      </tr>
+    
+    </tbody>
+  </table>
+</ng-container>
+<ng-template #elseTemplate> Recipies not found </ng-template>

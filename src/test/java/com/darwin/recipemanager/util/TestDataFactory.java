@@ -1,4 +1,4 @@
-package com.darwin.recipemanager.api.util;
+package com.darwin.recipemanager.util;
 
 import com.darwin.recipemanager.generated.model.Ingredient;
 import com.darwin.recipemanager.generated.model.InsertRecipeRequest;

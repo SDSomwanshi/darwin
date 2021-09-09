@@ -1,0 +1,34 @@
+
+
+<ng-container *ngIf="recipe; else elseTemplate">
+  <ul class="list-group">
+    <li class="list-group-item">{{recipe.recipeName}}</li>
+    <li class="list-group-item">{{recipe.recipeNature}}  
+      <ng-container *ngIf="recipe.recipeNature === 'VEG'; else nonVeg">
+      <div class="green-dot"></div>
+    </ng-container>
+    <ng-template #nonVeg>
+      <div class="red-dot"></div>
+    </ng-template>
+      </li>
+    <li class="list-group-item">ingredients
+      <ul>
+        <li *ngFor="let ing of recipe.ingredients">
+          {{ing.name}}
+        </li>
+      </ul>
+    </li>
+    <li class="list-group-item">instructions
+      <ul>
+        <li *ngFor="let ins of recipe.instructions">
+          {{ins.instructionName}}
+        </li>
+      </ul>
+    </li>
+    <li class="list-group-item">{{recipe.createdDate | date}}</li>
+    <li class="list-group-item">{{recipe.updatedDate | date }}</li>
+  </ul>
+</ng-container>
+<ng-template #elseTemplate>
+  Receipe not found
+</ng-template>

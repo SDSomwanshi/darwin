@@ -10,6 +10,7 @@ import com.darwin.recipemanager.model.RecipeEntity;
 import com.darwin.recipemanager.util.RecipeNature;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +32,16 @@ public class RequestMapper {
     public InsertRecipeResponse mapRecipeDataEntityToResponse(RecipeEntity entity) {
         InsertRecipeResponse recipeResponse = new InsertRecipeResponse();
         recipeResponse.setRecipeName(entity.getRecipeName());
+        recipeResponse.setRecipeId(entity.getRecipeDataId());
         recipeResponse.setRecipeNature(entity.getNatureOfRecipe() == 0 ? InsertRecipeResponse.RecipeNatureEnum.valueOf("VEG") : InsertRecipeResponse.RecipeNatureEnum.valueOf("NONVEG"));
         recipeResponse.setIngredients(getIngredients(entity.getIngredientsEntities()));
         recipeResponse.setInstructions(getInstructions(entity.getInstructionEntities()));
-        recipeResponse.setCreatedDate(entity.getCreatedDate().toString());
-        recipeResponse.setUpdatedDate(entity.getModifiedDate().toString());
+        if(!StringUtils.isEmpty(entity.getCreatedDate())) {
+            recipeResponse.setCreatedDate(entity.getCreatedDate().toString());
+        }
+        if(!StringUtils.isEmpty(entity.getModifiedDate())) {
+            recipeResponse.setUpdatedDate(entity.getModifiedDate().toString());
+        }
         return recipeResponse;
     }
 
