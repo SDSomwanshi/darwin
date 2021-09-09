@@ -11,6 +11,8 @@ import { ReceipeListComponent } from './components/receipe-list/receipe-list.com
 import { HttpService } from './services/http.service';
 import { FormsModule } from '@angular/forms';
 import { RecipeDeleteComponent } from './components/recipe-delete/recipe-delete.component';
+import { RecipeAddEditComponent } from './components/recipe-add-edit/recipe-add-edit.component';
+import { ReactiveFormsModule  } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,13 +20,15 @@ import { RecipeDeleteComponent } from './components/recipe-delete/recipe-delete.
     HomeComponent,
     ReceipeDetailsComponent,
     ReceipeListComponent,
-    RecipeDeleteComponent
+    RecipeDeleteComponent,
+    RecipeAddEditComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [RecipeService, HttpService],
   bootstrap: [AppComponent]

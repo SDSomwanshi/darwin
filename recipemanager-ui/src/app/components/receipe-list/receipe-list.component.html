@@ -29,11 +29,16 @@
           [title]="item.recipeName"
           [routerLink]="['/details', item.recipeId]">
           Details
-        </a>
+        </a>&nbsp;
           <a
                   [title]="item.recipeName"
                   [routerLink]="['/delete', item.recipeId]">
             Delete
+          </a>&nbsp;
+          <a
+                  [title]="item.recipeName"
+                  [routerLink]="['/edit', item.recipeId]">
+            Edit
           </a>
         </td>
       </tr>

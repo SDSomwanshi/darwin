@@ -1,6 +1,6 @@
 import { Receipe } from './../../models/receipe';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe-service.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { RecipeService } from 'src/app/services/recipe-service.service';
 export class RecipeDeleteComponent implements OnInit {
     recipe: Receipe;
       errorMsg: any;
-  constructor(private recipeService: RecipeService,
+  constructor(private router: Router, private recipeService: RecipeService,
                   private route: ActivatedRoute) {
 
   }
@@ -21,9 +21,11 @@ export class RecipeDeleteComponent implements OnInit {
         const recipeFromRoute = routeParams.get('id');
         this.recipeService
           .deleteRecipe(recipeFromRoute)
-          .subscribe((res) => (this.recipe = res), err=>{
+          .subscribe((res) => {
+              alert("Recipe has been deleted successfully!!");
+              this.router.navigate(['/']);
+          }, err=>{
             console.log("error while getting r by id",recipeFromRoute,err);
-            alert("Recipe has been deleted successfully!!");
             this.errorMsg = err;
           });
   }

@@ -1,7 +1,8 @@
 export class Receipe {
     recipeId: string;
     recipeName: string;
-    recipeNature: string;
+    recipeType: string;
+    recipeQty: number;
     ingredients: Ingredients[]
     instructions: Instructions[]
     createdDate: string;
