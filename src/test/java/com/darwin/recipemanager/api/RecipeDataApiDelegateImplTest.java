@@ -37,7 +37,7 @@ public class RecipeDataApiDelegateImplTest {
 
         Mockito.when(recipeDataService.saveRecipeData(Mockito.any(), Mockito.any())).thenReturn(new InsertRecipeResponse());
         ResponseEntity<InsertRecipeResponse> response = recipeDataApiDelegate.saveRecipe(recipeRequest, traceId);
-        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assert.assertEquals(HttpStatus.CREATED, response.getStatusCode());
         Assert.assertNotNull(response.getBody());
     }
 

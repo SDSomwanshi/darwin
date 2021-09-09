@@ -4,13 +4,11 @@ import com.darwin.recipemanager.generated.api.RecipeDataApiDelegate;
 import com.darwin.recipemanager.generated.model.InsertRecipeRequest;
 import com.darwin.recipemanager.generated.model.InsertRecipeResponse;
 import com.darwin.recipemanager.generated.model.RecipeList;
-import com.darwin.recipemanager.model.RecipeEntity;
 import com.darwin.recipemanager.service.RecipeDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Component
 @RequiredArgsConstructor
@@ -21,7 +19,7 @@ public class RecipeDataApiDelegateImpl implements RecipeDataApiDelegate {
     @Override
     public ResponseEntity<InsertRecipeResponse> saveRecipe(InsertRecipeRequest body, String traceId) {
 
-        return new ResponseEntity<>(recipeDataService.saveRecipeData(body, traceId), HttpStatus.OK);
+        return new ResponseEntity<>(recipeDataService.saveRecipeData(body, traceId), HttpStatus.CREATED);
     }
 
     @Override
@@ -38,5 +36,10 @@ public class RecipeDataApiDelegateImpl implements RecipeDataApiDelegate {
     @Override
     public ResponseEntity<Void> delete(String traceId, String recipeId) {
         return new ResponseEntity<>(recipeDataService.deleteRecipeDataById(traceId, recipeId), HttpStatus.OK);
+    }
+
+    public ResponseEntity<InsertRecipeResponse> updateRecipe(InsertRecipeRequest body, String traceId,
+                         String recipeId) {
+        return new ResponseEntity<>(recipeDataService.updateRecipeData(body, traceId, recipeId), HttpStatus.OK);
     }
 }

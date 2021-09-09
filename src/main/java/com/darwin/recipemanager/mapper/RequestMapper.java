@@ -23,6 +23,7 @@ public class RequestMapper {
         RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setRecipeDataId(recipeDataId);
         recipeEntity.setRecipeName(recipeRequest.getRecipeName());
+        recipeEntity.setQuantity(recipeRequest.getRecipeQty());
         recipeEntity.setNatureOfRecipe(RecipeNature.valueOf(recipeRequest.getRecipeType()).getValue());
         recipeEntity.setIngredientsEntities(getIngredientData(recipeRequest.getIngredients(), recipeDataId));
         recipeEntity.setInstructionEntities(getInstructionData(recipeRequest.getInstructions(), recipeDataId));
@@ -34,6 +35,7 @@ public class RequestMapper {
         recipeResponse.setRecipeName(entity.getRecipeName());
         recipeResponse.setRecipeId(entity.getRecipeDataId());
         recipeResponse.setRecipeNature(entity.getNatureOfRecipe() == 0 ? InsertRecipeResponse.RecipeNatureEnum.valueOf("VEG") : InsertRecipeResponse.RecipeNatureEnum.valueOf("NONVEG"));
+        recipeResponse.setRecipeQty(String.valueOf(entity.getQuantity()));
         recipeResponse.setIngredients(getIngredients(entity.getIngredientsEntities()));
         recipeResponse.setInstructions(getInstructions(entity.getInstructionEntities()));
         if(!StringUtils.isEmpty(entity.getCreatedDate())) {
@@ -88,4 +90,5 @@ public class RequestMapper {
         });
         return instructionEntities;
     }
+
 }

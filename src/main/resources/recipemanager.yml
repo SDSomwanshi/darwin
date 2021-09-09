@@ -29,6 +29,58 @@ paths:
         description: User will insert a new recipe
         required: true
       responses:
+        '201':
+          description: |
+            OK
+          headers:
+            trace-id:
+              description: trace ID for this transaction
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InsertRecipeResponse"
+        '400':
+          description: Invalid input parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /{recipe_id}/recipe:
+    put:
+      summary: Accept and save recipe data
+      operationId: updateRecipe
+      tags:
+        - RecipeData
+      parameters:
+        - $ref: '#/components/parameters/traceId'
+        - name: recipe_id
+          in: path
+          description: recipeId of calling
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertRecipeRequest"
+        description: User will insert a new recipe
+        required: true
+      responses:
         '200':
           description: |
             OK

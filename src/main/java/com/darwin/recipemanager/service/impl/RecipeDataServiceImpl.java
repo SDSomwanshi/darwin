@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +47,33 @@ public class RecipeDataServiceImpl implements RecipeDataService {
     }
 
     @Override
+    public InsertRecipeResponse updateRecipeData(InsertRecipeRequest request, String traceId, String recipeDataId) {
+        log.info("Initiated updateRecipeData flow for recipeId: "+recipeDataId+" traceId: "+traceId);
+        RecipeEntity recipeEntity = requestMapper.mapRecipeDataRequestToRecipeEntity(request, recipeDataId);
+        Optional<RecipeEntity> entity = null;
+        try {
+            entity = recipeDataRepository.findById(recipeDataId);
+            if(entity.isPresent()) {
+                entity.get().setRecipeDataId(recipeEntity.getRecipeDataId());
+                entity.get().setRecipeName(recipeEntity.getRecipeName());
+                entity.get().setIngredientsEntities(null);
+                entity.get().setIngredientsEntities(recipeEntity.getIngredientsEntities());
+                entity.get().setNatureOfRecipe(recipeEntity.getNatureOfRecipe());
+                entity.get().setQuantity(recipeEntity.getQuantity());
+                entity.get().setInstructionEntities(null);
+                entity.get().setInstructionEntities(recipeEntity.getInstructionEntities());
+                log.info("Recipe "+entity.get().getRecipeDataId()+"has successfully updated "+traceId);
+                return requestMapper.mapRecipeDataEntityToResponse(recipeDataRepository.save(entity.get()));
+            }
+        } catch (DataAccessException | NoSuchElementException e) {
+            log.error("An error occurred while updating the recipe: "+entity.get().getRecipeDataId()+" "+traceId, e);
+            e.printStackTrace();
+            throw e;
+        }
+        return null;
+    }
+
+    @Override
     public RecipeList getAllRecipe(String traceId) {
         log.info("Initiated getAllRecipe "+traceId);
         RecipeList recipeList = new RecipeList();
@@ -80,6 +106,7 @@ public class RecipeDataServiceImpl implements RecipeDataService {
         }
     }
 
+    @Override
     public InsertRecipeResponse getRecipeById(String traceId, String recipeId) {
         log.info("Initiated getReRecipeById "+traceId);
         try {
@@ -93,6 +120,7 @@ public class RecipeDataServiceImpl implements RecipeDataService {
         }
     }
 
+    @Override
     public Void deleteRecipeDataById(String traceId, String recipeId) {
         log.info("Initiated deleteRecipeById");
         try {

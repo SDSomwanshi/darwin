@@ -10,4 +10,5 @@ public interface RecipeDataService {
     RecipeList getAllRecipe(String traceId);
     InsertRecipeResponse getRecipeById(String traceId, String recipeId);
     Void deleteRecipeDataById(String traceId, String recipeId);
+    InsertRecipeResponse updateRecipeData(InsertRecipeRequest request, String traceId, String recipeId);
 }

@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "04be0d72-0afa-484c-b628-0df83e8f47e9",
+		"name": "RecipeManager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "saveRecipe",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var traceId = Math.random().toString().slice(2, 18);\r",
+							"pm.environment.set(\"traceId\", traceId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify response\", function() {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"recipeId\", jsonData.recipeId)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "trace-id",
+						"value": "{{traceId}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"recipeName\": \"Butter Chicken\",\r\n    \"recipeType\": \"NONVEG\",\r\n    \"recipeQty\": 3,\r\n    \"ingredients\": [\r\n        {\r\n            \"name\": \"Butter\"\r\n        },\r\n        {\r\n            \"name\": \"Chicken\"\r\n        },\r\n        {\r\n            \"name\": \"Onion\"\r\n        }\r\n    ],\r\n    \"instructions\": [\r\n        {\r\n            \"instructionName\": \"add extra butter\"\r\n        },\r\n        {\r\n            \"instructionName\": \"cook at low flame\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/recipe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "saveRecipe Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var traceId = Math.random().toString().slice(2, 18);\r",
+							"pm.environment.set(\"traceId\", traceId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "trace-id",
+						"value": "{{traceId}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"recipeName\": \"Butter Chicken\",\r\n    \"recipeType\": \"NONVEG\",\r\n    \"recipeQty\": 3,\r\n    \"ingredients\": [\r\n        {\r\n            \"name\": \"Butter\"\r\n        },\r\n        {\r\n            \"name\": \"Chicken\"\r\n        },\r\n        {\r\n            \"name\": \"Onion\"\r\n        },\r\n        {\r\n            \"name\": \"Soya sos\"\r\n        }\r\n    ],\r\n    \"instructions\": [\r\n        {\r\n            \"instructionName\": \"add extra butter\"\r\n        },\r\n        {\r\n            \"instructionName\": \"cook at low flame\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/{{recipeId}}/recipe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"{{recipeId}}",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllRecipes",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var traceId = Math.random().toString().slice(2, 18);\r",
+							"pm.environment.set(\"traceId\", traceId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "trace-id",
+						"value": "{{traceId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/recipes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"recipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getRecipeById",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var traceId = Math.random().toString().slice(2, 18);\r",
+							"pm.environment.set(\"traceId\", traceId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "trace-id",
+						"value": "{{traceId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/recipes/7ab0ab81-6a24-4dad-80f9-713e700f629c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"recipes",
+						"7ab0ab81-6a24-4dad-80f9-713e700f629c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteRecipeById",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var traceId = Math.random().toString().slice(2, 18);\r",
+							"pm.environment.set(\"traceId\", traceId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "trace-id",
+						"value": "{{traceId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/recipes/7ab0ab81-6a24-4dad-80f9-713e700f629c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"recipes",
+						"7ab0ab81-6a24-4dad-80f9-713e700f629c"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
